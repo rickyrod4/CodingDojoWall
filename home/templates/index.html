@@ -13,11 +13,19 @@
     <div class="container">
         <div id="header">
             <h1>Welcome, Please register or sign in!</h1>
+            {% if messages %}
+            <ul class="messages">    
+                {% for message in messages %}    
+                     <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+                {% endfor %}
+            </ul>
+            {% endif %}
         </div>
         <div class="row">
             <div class="col">
                 <h3>Register</h3>
                 <form action="/register" method="POST">
+                    {% csrf_token %}
                     <div class="form-group">
                         <label for="first_name">First Name</label>
                         <input type="text" name="first_name" id="first_name">
@@ -43,6 +51,7 @@
             </div>
             <div class="col">
                 <form action="/login" method="POST">
+                    {% csrf_token %}
                     <div class="form-group">
                         <label for="username">Username</label>
                         <input type="text" name="username" id="username">
