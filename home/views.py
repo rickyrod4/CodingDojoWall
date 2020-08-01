@@ -29,7 +29,8 @@ def login(request):
 
 def dashboard(request):
     context = {
-        'user' : User.objects.get(id=request.session['user_id'])
+        'user' : User.objects.get(id=request.session['user_id']),
+        'messages' :Message.objects.all()
     }
     return render(request, 'dashboard.html', context)
 
