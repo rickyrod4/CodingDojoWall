@@ -30,10 +30,13 @@ def login(request):
 def dashboard(request):
     context = {
         'user' : User.objects.get(id=request.session['user_id']),
-        'messages' :Message.objects.all()
+        #'messages' :Message.objects.all()
     }
     return render(request, 'dashboard.html', context)
 
 def logout(request):
     request.session.clear()
     return redirect('/')
+
+def post(request):
+    pass
