@@ -43,5 +43,22 @@ def post(request):
         message = request.POST['message'],
         author = User.objects.get(id=request.session['user_id'])
     )
+    return redirect('/dashboard')
 
+def post(request, post_id):
+    context = {
+        'user' : User.objects.get(id=request.session['user_id']),
+        'post' : Message.objects.get(id=post_id),
+        'comments' : Comment.objects.order_by('id')
+    }
+    return render(request,'show.html', context)
+
+def comment(request, post_id):
+    user = User.objects.get(id=request.session['user_id'])
+    post = Message.objects.get(id=post_id)
+    Comment.objects.create(
+        comment = request.POST['comment'],
+        author = user,
+        message = post
+    )
     return redirect('/dashboard')

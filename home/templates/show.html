@@ -19,27 +19,30 @@
                     <h3>Hello, {{ user.first_name }} {{ user.last_name}} <a href="/logout" class="btn btn-outline-primary">Logout</a></h3>
                 </div>
             </div>
-            <div class="row" id="post_to_wall">
-                <form action="/post" method="POST">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="message">Post A Message</label>
-                        <textarea class="form-control" name="message" id="message" rows="5" cols="45"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-outline-primary">Post</button>
-                </form>
-            </div>
-            <br><br><br>
-            {% for post in messages %}
-            <div class="row" id="all_post">
+            <div >
                     <div class="border">
                         <h6>{{ post.author.first_name }} {{ post.author.last_name }} - {{ post.created_at }}</h6>
                         <p>{{ post.message }}</p>
-                        <p>{{ post.comment_in_message.comment }}</p>
-                        <a href="/show/{{ post.id }}">Write a comment</a>
                     </div>
+                    <div>
+                        <form action="/comment/{{ post.id }}" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="comment">Write A Comment </label>
+                                <textarea class="form-control" name="comment" id="comment" rows="5" cols="45"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-outline-primary">Post Comment</button>
+                        </form>
+                        {% for comment in comments %}
+                        <div>
+                            <h6>{{ comment.author.first_name }} {{ comment.author.last_name }} - {{ comment.created_at }}</h6>
+                            <p>{{ comment.comment }}</p>
+                        </div>
+    
+                        {% endfor %}
+                    </div>
+
             </div>
-            {% endfor %}
     </div>
 </body>
 </html>
