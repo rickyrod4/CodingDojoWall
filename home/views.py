@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import User
+from .models import User, Message, Comment
 
 # Create your views here.
 def index(request):
@@ -30,7 +30,7 @@ def login(request):
 def dashboard(request):
     context = {
         'user' : User.objects.get(id=request.session['user_id']),
-        #'messages' :Message.objects.all()
+        'messages' : Message.objects.order_by('-id')
     }
     return render(request, 'dashboard.html', context)
 
@@ -39,4 +39,9 @@ def logout(request):
     return redirect('/')
 
 def post(request):
-    pass
+    Message.objects.create(
+        message = request.POST['message'],
+        author = User.objects.get(id=request.session['user_id'])
+    )
+
+    return redirect('/dashboard')
